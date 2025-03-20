@@ -7,6 +7,7 @@ import com.wain.pichub.model.entity.User;
 import com.wain.pichub.model.enums.UserRoleEnum;
 import com.wain.pichub.service.UserService;
 import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.annotation.Around;
 import org.springframework.stereotype.Component;
 import org.aspectj.lang.annotation.Aspect;
 import org.springframework.web.context.request.RequestAttributes;
@@ -28,7 +29,7 @@ public class AuthInterceptor {
 
     @Resource
     private UserService userService;
-
+    @Around("@annotation(authCheck)")
     public Object doIntercept(ProceedingJoinPoint joinPoint, AuthCheck authCheck) throws Throwable {
         String mustRole = authCheck.mustRole();
         RequestAttributes requestAttributes = RequestContextHolder.currentRequestAttributes();
