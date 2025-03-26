@@ -10,11 +10,17 @@ import com.wain.pichub.constant.UserConstant;
 import com.wain.pichub.exception.BusinessException;
 import com.wain.pichub.exception.ErrorCode;
 import com.wain.pichub.manager.CosManager;
+import com.wain.pichub.model.dto.picture.PictureUploadRequest;
+import com.wain.pichub.model.entity.User;
+import com.wain.pichub.model.vo.PictureVO;
+import com.wain.pichub.service.PictureService;
+import com.wain.pichub.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
@@ -32,6 +38,12 @@ public class FileController {
 
     @Resource
     private CosManager cosManager;
+
+    @Resource
+    private UserService userService;
+
+    @Resource
+    private PictureService pictureService;
 
     /**
      * 测试文件上传
@@ -67,6 +79,13 @@ public class FileController {
         }
     }
 
+    /**
+     * 测试文件下载
+     *
+     * @param filepath
+     * @param response
+     * @throws IOException
+     */
     @AuthCheck(mustRole = UserConstant.ADMIN_ROLE)
     @GetMapping("/test/download")
     public void testDownloadFiles(String filepath, HttpServletResponse response) throws IOException {
@@ -92,5 +111,14 @@ public class FileController {
         }
     }
 
+    @AuthCheck(mustRole = UserConstant.ADMIN_ROLE)
+    @PostMapping("/upload")
+    public BaseResponse<PictureVO> uploadPicture(@RequestPart("file") MultipartFile multipartFile,
+                                                 PictureUploadRequest pictureUploadRequest,
+                                                 HttpServletRequest request) {
+        User loginuser = userService.getLoginUser(request);
+        PictureVO pictureVO = pictureService.uploadPicture(multipartFile, pictureUploadRequest, loginuser);
+        return ResultUtils.success(pictureVO);
+    }
 
 }
