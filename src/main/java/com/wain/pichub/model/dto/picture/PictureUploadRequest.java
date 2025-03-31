@@ -5,7 +5,7 @@ import lombok.Data;
 import java.io.Serializable;
 
 /**
- * @Description:
+ * @Description: 图片上传请求
  * @Author: WainZeng
  * @Date: 2025/3/25 15:18
  */
