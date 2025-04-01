@@ -1,18 +1,18 @@
 package com.wain.pichub.model.dto.picture;
 
-import lombok.Data;
 
+import lombok.Data;
 import java.io.Serializable;
 import java.util.List;
 
 /**
- * @Description:
+ * @Description: 图片修改请求
  * @Author: WainZeng
- * @Date: 2025/3/27 10:56
+ * @Date: 2025/3/31 15:21
  */
 
 @Data
-public class PictureUpdateRequest implements Serializable {
+public class PictureEditRequest implements Serializable {
 
     /**
      * id
